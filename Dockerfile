@@ -9,6 +9,7 @@ ENV PATH /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:
 ARG TAR_OPTIONS=--no-same-owner
 
 COPY install.r DATA_private*.tar.gz /tmp/
+COPY install.r /tmp/
 
 # OS / build dependencies
 RUN yum groupinstall -y "development tools"                                              && \
@@ -217,6 +218,8 @@ RUN pushd /fbp/bb_pipeline_v_2.5/bb_ext_tools                                   
     ln -s /mcr/v84 MCRv84                                                                                                 && \
     popd
 
+# libraries necessary for R devtools to function properly
+RUN yum install -y harfbuzz-devel fribidi-devel freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel
 
 # R dependencies
 RUN Rscript /tmp/install.r
@@ -226,6 +229,7 @@ RUN Rscript /tmp/install.r
 RUN pushd /fbp/bb_pipeline_v_2.5/bb_python/python_installation                         && \
     tar -zxvf gradunwarp_FMRIB.tar.gz                                                  && \
     pushd gradunwarp_FMRIB                                                             && \
+    sed 's/HCP-1.0.2/1.0.2+HCP/g' setup.py > setup-fix.py && mv setup-fix.py setup.py  && \
     /fbp/bb_pipeline_v_2.5/bb_python/bb_python/bin/python3 setup.py install            && \
     /fbp/bb_pipeline_v_2.5/bb_python/bb_python_asl_ukbb/bin/python3 setup.py install   && \
     /fbp/bb_pipeline_v_2.5/bb_python/bb_python_gradunwarp/bin/python3 setup.py install && \
@@ -243,6 +247,13 @@ RUN pushd /fbp && \
     tar xf /tmp/DATA_public.tar.gz  && \
     tar xf /tmp/DATA_private.tar.gz && \
     popd
+
+# move content of DATA_public to their proper targets
+RUN mv /fbp/DATA_public/templates /fbp && \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/* /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/ && \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_data /fbp/bb_pipeline_v_2.5 && \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_ext_tool /fbp/bb_pipeline_v_2.5/ && \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir/* /fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir
 
 # Clean up
 RUN rm -rf /tmp/*           && \

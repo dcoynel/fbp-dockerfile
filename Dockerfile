@@ -8,8 +8,9 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV PATH /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ARG TAR_OPTIONS=--no-same-owner
 
-COPY install.r DATA_private*.tar.gz /tmp/
+#COPY install.r DATA_private*.tar.gz /tmp/
 COPY install.r /tmp/
+COPY UKBiobank_QSM_centos7 /tmp/
 
 # OS / build dependencies
 RUN yum groupinstall -y "development tools"                                              && \
@@ -249,12 +250,16 @@ RUN pushd /fbp && \
     popd
 
 # move content of DATA_public to their proper targets
-RUN mkdir -p /fbp/templates 																													&&\
-	mv /fbp/DATA_public/templates /fbp/templates 																								&& \
-	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/* /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/ 											&& \
-	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_data /fbp/bb_pipeline_v_2.5 																		&& \
-	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_ext_tool /fbp/bb_pipeline_v_2.5/ 																	&& \
+RUN mkdir -p /fbp/templates 															&& \
+	mv /fbp/DATA_public/templates /fbp/templates 												&& \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/* /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/ 					&& \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_data /fbp/bb_pipeline_v_2.5 									&& \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_ext_tool /fbp/bb_pipeline_v_2.5/								&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir/* /fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir
+
+# replace the compiled version of UKBiobank_QSM with one compatible with centos7
+RUN	rm -rf /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled && \
+	mv /tmp/UKBiobank_QSM_centos7 /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled 
 
 # Clean up
 RUN rm -rf /tmp/*           && \

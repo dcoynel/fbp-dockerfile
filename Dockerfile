@@ -259,11 +259,15 @@ RUN mkdir -p /fbp/templates 															&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/* /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/ 					&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_data /fbp/bb_pipeline_v_2.5 									&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_ext_tool /fbp/bb_pipeline_v_2.5/								&& \
-	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir/* /fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir/* /fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir	&& \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_structural_pipeline/bb_swi_dir/compiled/Linux/x86_64/* fbp/bb_pipeline_v_2.5/bb_structural_pipeline/bb_swi_dir/compiled/Linux/x86_64/ && \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_fix_dir/compiled/Linux/x86_64/* fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_fix_dir/compiled/Linux/x86_64/
 
 # replace the compiled version of UKBiobank_QSM with one compatible with centos7
-RUN	rm -rf /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled && \
-	mv /tmp/UKBiobank_QSM_centos7 /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled 
+RUN	cd /tmp && \
+	tar -xzf UKBiobank_QSM_centos7_matlabR2017b.tar.gz && \
+	rm -rf /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled && \
+	mv /tmp/UKBiobank_QSM_centos7_matlabR2017b /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled
 
 # Clean up
 RUN rm -rf /tmp/*           && \

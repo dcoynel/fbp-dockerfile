@@ -10,7 +10,7 @@ ARG TAR_OPTIONS=--no-same-owner
 
 #COPY install.r DATA_private*.tar.gz /tmp/
 COPY install.r /tmp/
-COPY UKBiobank_QSM_centos7 /tmp/
+COPY UKBiobank_QSM_centos7_matlabR2017b.tar.gz /tmp/
 
 # OS / build dependencies
 RUN yum groupinstall -y "development tools"                                              && \
@@ -84,7 +84,11 @@ RUN mkdir -p /mcr/v81/bld /mcr/v83/bld /mcr/v84/bld  /mcr/v901/bld /mcr/v92/bld 
     wget https://ssd.mathworks.com/supportfiles/downloads/R2017a/deployment_files/R2017a/installers/glnxa64/MCR_R2017a_Update_3_glnxa64.sh && \
     sh ./MCR_R2017a_Update_3_glnxa64.sh -d=/mcr/v92 -s && \
     popd && \
-    rm -rf /mcr/v81/bld /mcr/v83/bld /mcr/v84/bld  /mcr/v901/bld /mcr/v92/bld
+    wget https://ssd.mathworks.com/supportfiles/downloads/R2017b/deployment_files/R2017b/installers/glnxa64/MCR_R2017b_glnxa64_installer.zip && \
+    unzip MCR_R2017b_glnxa64_installer.zip && \
+    ./install -destinationFolder /mcr/v93 -mode silent -agreeToLicense yes && \
+    popd && \
+    rm -rf /mcr/v81/bld /mcr/v83/bld /mcr/v84/bld  /mcr/v901/bld /mcr/v92/bld /mcr/v93/bld
 
 # CUDA runtimes
 RUN mkdir /cuda-bld                                                                                                  && \

@@ -258,7 +258,7 @@ RUN mkdir -p /fbp/templates 															&& \
 	mv /fbp/DATA_public/templates /fbp/templates 												&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_QSM_pipeline/* /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/ 					&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_data /fbp/bb_pipeline_v_2.5 									&& \
-	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_ext_tool /fbp/bb_pipeline_v_2.5/								&& \
+	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_ext_tool/* /fbp/bb_pipeline_v_2.5/bb_ext_tools/						&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir/* /fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_ICA_dr_dir	&& \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_structural_pipeline/bb_swi_dir/compiled/Linux/x86_64/* fbp/bb_pipeline_v_2.5/bb_structural_pipeline/bb_swi_dir/compiled/Linux/x86_64/ && \
 	mv /fbp/DATA_public/bb_pipeline_v_2.5/bb_functional_pipeline/bb_fix_dir/compiled/Linux/x86_64/* fbp/bb_pipeline_v_2.5/bb_functional_pipeline/bb_fix_dir/compiled/Linux/x86_64/

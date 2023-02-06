@@ -11,6 +11,7 @@ ARG TAR_OPTIONS=--no-same-owner
 #COPY install.r DATA_private*.tar.gz /tmp/
 COPY install.r /tmp/
 COPY UKBiobank_QSM_centos7_matlabR2017b.tar.gz /tmp/
+COPY license.txt /tmp/
 
 # OS / build dependencies
 RUN yum groupinstall -y "development tools"                                              && \
@@ -268,6 +269,10 @@ RUN	cd /tmp && \
 	tar -xzf UKBiobank_QSM_centos7_matlabR2017b.tar.gz && \
 	rm -rf /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled && \
 	mv /tmp/UKBiobank_QSM_centos7_matlabR2017b /fbp/bb_pipeline_v_2.5/bb_QSM_pipeline/Matlab_Compiled
+
+# copy Freesurfer license file
+RUN cp /tmp/license.txt /fbp/bb_pipeline_v_2.5/bb_ext_tools/freesurfer3/ && \
+	cp /tmp/license.txt /fbp/bb_pipeline_v_2.5/bb_ext_tools/freesurfer4/
 
 # Clean up
 RUN rm -rf /tmp/*           && \
